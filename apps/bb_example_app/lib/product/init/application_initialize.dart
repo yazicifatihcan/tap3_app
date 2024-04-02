@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bb_example_app/product/managers/local_notification_handler.dart';
 import 'package:bb_example_app/product/service/product_client.dart';
 import 'package:bb_example_app/product/utility/enums/cache_enums.dart';
@@ -34,7 +35,7 @@ class ApplicationInitialize {
 
     await AppStateController.init(
       colorPalettes: [
-        LightColors(),
+        // LightColors(),
         DarkColors(),
       ],
       lanKey: CacheKey.colorCode.name,

@@ -1,5 +1,5 @@
 import 'package:api/api.dart';
-import 'package:bb_example_app/product/managers/session_manager.dart';
+import 'package:bb_example_app/product/managers/auth_handler.dart';
 import 'package:bb_example_app/product/service/product_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ abstract class BaseControllerInterface extends GetxController {
   set errorMessage(String? value) => _errorMessage.value = value;
 
   ///Get [SessionManager] instance
-  SessionManager get sessionManager => Get.find<SessionManager>();
+  SessionHandler get sessionManager => SessionHandler.instance;
 
   ProductClient get client => ProductClient.instance;
 

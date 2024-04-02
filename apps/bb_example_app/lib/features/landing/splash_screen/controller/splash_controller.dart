@@ -1,6 +1,5 @@
 import 'package:bb_example_app/product/base/controller/base_controller.dart';
 import 'package:bb_example_app/product/managers/auth_handler.dart';
-import 'package:bb_example_app/product/managers/session_manager.dart';
 import 'package:bb_example_app/product/widgets/message/custom_toast_message.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +17,13 @@ class SplashController extends BaseControllerInterface {
 
   /// Function call to handle things in splash
   Future<void> ready() async {
+    // await LocaleManager.instance.clearAll();
     await Get.deleteAll();
-    Get.put(SessionManager());
 
     await LocalAuthManager.initLocalAuthManager();
 
     await _initializeWidgets();
-    await AuthHandler.instance.initializeValue();
-    
+    await SessionHandler.instance.init();
   }
 
   Future<void> _initializeWidgets() async {

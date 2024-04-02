@@ -5,10 +5,9 @@ import 'package:flutter_svg/svg.dart';
 
 class IconAssets {
   const IconAssets();
-  
-  static const  baseIconPath = 'assets/icons/';
 
-    
+  static const baseIconPath = 'assets/icons/';
+
   SvgGeneralImage get circleDoneIcon =>
       const SvgGeneralImage('${baseIconPath}circle_done_icon.svg');
 
@@ -24,6 +23,18 @@ class IconAssets {
   SvgGeneralImage get warningIcon =>
       const SvgGeneralImage('${baseIconPath}warning_icon.svg');
 
+  SvgGeneralImage get top3Logo =>
+      const SvgGeneralImage('${baseIconPath}top3_logo.svg');
+
+  SvgGeneralImage get nfcMobileIcon =>
+      const SvgGeneralImage('${baseIconPath}nfc_mobile_icon.svg');
+
+  SvgGeneralImage get qrIcon =>
+      const SvgGeneralImage('${baseIconPath}qr_icon.svg');
+
+  SvgGeneralImage get moreIcon =>
+      const SvgGeneralImage('${baseIconPath}more_icon.svg');
+
   /// List of all assets
   List<SvgGeneralImage> get values => [
         circleDoneIcon,
@@ -31,6 +42,10 @@ class IconAssets {
         outlineDoneIcon,
         outlineErrorIcon,
         warningIcon,
+        top3Logo,
+        nfcMobileIcon,
+        qrIcon,
+        moreIcon,
       ];
 }
 
@@ -40,7 +55,7 @@ class SvgGeneralImage {
   final String _assetName;
 
   SvgPicture svg({
-    required Color color, 
+    Color? color,
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
@@ -71,10 +86,8 @@ class SvgGeneralImage {
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
       theme: theme,
-      colorFilter: ColorFilter.mode(
-                color,
-                BlendMode.srcIn,
-              ),
+      colorFilter:
+          color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
       clipBehavior: clipBehavior,
     );
   }

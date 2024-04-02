@@ -10,7 +10,7 @@ class DarkColors implements AbstractColor {
   String get themeCode => 'dark';
 
   @override
-  Color get primary => const Color(0xFFD0BCFF);
+  Color get primary => const Color(0xFF6644FF);
   @override
   Color get onPrimary => const Color(0xFF381E72);
   @override
@@ -18,9 +18,9 @@ class DarkColors implements AbstractColor {
   @override
   Color get onPrimaryContainer => const Color(0xFFEADDFF);
   @override
-  Color get secondary => const Color(0xFFCCC2DC);
+  Color get secondary => const Color(0xff21242C);
   @override
-  Color get onSecondary => const Color(0xFF332D41);
+  Color get onSecondary => const Color(0xff8F92A1);
   @override
   Color get secondaryContainer => const Color(0xFF4A4458);
   @override
@@ -50,7 +50,7 @@ class DarkColors implements AbstractColor {
   @override
   Color get surface => const Color(0xFF1C1B1F);
   @override
-  Color get onSurface => const Color(0xFFE6E1E5);
+  Color get onSurface => const Color(0xFFEEEEEE);
   @override
   Color get surfaceVariant => const Color(0xFF49454F);
   @override
@@ -58,9 +58,9 @@ class DarkColors implements AbstractColor {
   @override
   Color get inverseSurface => const Color(0xFFE6E1E5);
   @override
-  Color get onInverseSurface => const Color(0xFF313033);
+  Color get onInverseSurface => const Color(0xff8F92A1);
   @override
-  Color get inversePrimary => const Color(0xFF6750A4);
+  Color get inversePrimary => const Color(0xFF9CA3AF);
   @override
   Color get shadow => const Color(0xFF000000);
   @override

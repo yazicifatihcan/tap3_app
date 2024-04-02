@@ -41,7 +41,7 @@ class DashboardController extends BaseControllerInterface {
 
   void onTapLogout() {
     sessionManager.logOut();
-    AuthHandler.instance.userAuthStatus = UserAuthStatus.unAuthorized;
+    SessionHandler.instance.userAuthStatus = UserAuthStatus.unAuthorized;
     ToastMessage.showToastMessage(
       message: context.i10n.succesfullyLoggedOut,
       type: ToastMessageType.success,

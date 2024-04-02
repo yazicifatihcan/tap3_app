@@ -18,8 +18,8 @@ class LoginController extends BaseControllerInterface {
 
   Future<void> onTapLogin() async{
     if (fKey.currentState!.validate()) {
-      AuthHandler.instance.userAuthStatus=UserAuthStatus.authorized;
-      await sessionManager.logIn(GetUserInfoModel(token: '123'));
+      sessionManager.userAuthStatus=UserAuthStatus.authorized;
+      await sessionManager.logIn(token: 'Adm');
       ToastMessage.showToastMessage(
       message: context.i10n.succesfullyLoggedIn,
       type: ToastMessageType.success,

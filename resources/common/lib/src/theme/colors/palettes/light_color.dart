@@ -10,7 +10,7 @@ class LightColors implements AbstractColor {
   String get themeCode => 'light';
 
   @override
-  Color get primary => const Color(0xFF6750A4);
+  Color get primary => const Color(0xFF6644FF);
   @override
   Color get onPrimary => const Color(0xFFFFFFFF);
   @override
@@ -50,7 +50,7 @@ class LightColors implements AbstractColor {
   @override
   Color get surface => const Color(0xFFFFFBFE);
   @override
-  Color get onSurface => const Color(0xFF1C1B1F);
+  Color get onSurface => const Color(0xFFEEEEEE);
   @override
   Color get surfaceVariant => const Color(0xFFE7E0EC);
   @override

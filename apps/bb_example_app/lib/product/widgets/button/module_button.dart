@@ -10,13 +10,12 @@ class ModuleButton extends StatelessWidget {
   /// Generates [ModuleButton]
   const ModuleButton({required this.button, super.key});
 
-  
   /// Primary Button for current Module
   factory ModuleButton.primary({
     required VoidCallback onTap,
     required String title,
     Color? bgColor,
-    bool enabled=true,
+    bool enabled = true,
   }) {
     return ModuleButton(
       button: AppBaseButton(
@@ -36,12 +35,10 @@ class ModuleButton extends StatelessWidget {
       button: AppBaseButton(
         onTap: onTap,
         txt: title,
-        bgColor: RoutingManager.instance.context!.onSecondary,
-  
+        bgColor: RoutingManager.instance.context!.secondary,
       ),
     );
   }
-
 
   ///Button to Display under [ModuleButton]
   ///[AppBaseButton] in our case.

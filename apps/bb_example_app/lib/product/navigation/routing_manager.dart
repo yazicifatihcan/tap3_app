@@ -2,10 +2,10 @@ import 'package:bb_example_app/features/index.dart';
 import 'package:bb_example_app/product/managers/auth_handler.dart';
 import 'package:bb_example_app/product/navigation/modules/auth_route/auth_route.dart';
 import 'package:bb_example_app/product/navigation/modules/auth_route/auth_route_enums.dart';
-import 'package:bb_example_app/product/navigation/modules/bottom_navigation_route/bottom_navigation_route.dart';
-import 'package:bb_example_app/product/navigation/modules/bottom_navigation_route/bottom_navigation_route_enums.dart';
 import 'package:bb_example_app/product/navigation/modules/initial_route/initial_route.dart';
 import 'package:bb_example_app/product/navigation/modules/initial_route/initial_route_enums.dart';
+import 'package:bb_example_app/product/navigation/modules/main_route/main_route.dart';
+import 'package:bb_example_app/product/navigation/modules/main_route/main_route_screens_enum.dart';
 import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,21 +35,21 @@ class RoutingManager extends AbstractRoutingManager {
     initialLocation: '/',
     navigatorKey: parentKey,
     redirectLimit: 1,
-    refreshListenable: AuthHandler.instance,
+    refreshListenable: SessionHandler.instance,
     routes: [
       InitialRoute.route,
       AuthRoute.route,
-      BottomNavigationRoute.route,
+      ...MainRoute.route,
     ],
     redirect: (context, state) {
-      final authHandler = AuthHandler.instance;
+      final authHandler = SessionHandler.instance;
       if (authHandler.userAuthStatus == UserAuthStatus.notInitialized) {
         return InitialRouteScreens.splashScreen.path;
       } else if (_instance
           .isUnauthorizedAndNotAuthScreen(state.matchedLocation)) {
         return AuthRouteScreens.loginScreen.path;
       } else if (_instance.isAuthorizedAndAuthScreen(state.matchedLocation)) {
-        return BottomNavigationRouteEnum.dashboardScreen.path;
+        return MainRouteScreenEnums.homeScreen.path;
       }
       return null;
     },
@@ -71,7 +71,7 @@ class RoutingManager extends AbstractRoutingManager {
 
   bool isUnauthorizedAndNotAuthScreen(String currentName) {
     final isUnauthorized =
-        AuthHandler.instance.userAuthStatus == UserAuthStatus.unAuthorized;
+        SessionHandler.instance.userAuthStatus == UserAuthStatus.unAuthorized;
     final isNotAuthScreen = AuthRouteScreens.values
                 .indexWhere((element) => element.path == currentName) ==
             -1 ||
@@ -82,7 +82,7 @@ class RoutingManager extends AbstractRoutingManager {
 
   bool isAuthorizedAndAuthScreen(String currentName) {
     final isAuthorized =
-        AuthHandler.instance.userAuthStatus == UserAuthStatus.authorized;
+        SessionHandler.instance.userAuthStatus == UserAuthStatus.authorized;
     final isAuthScreen = AuthRouteScreens.values
                 .indexWhere((element) => element.path == currentName) !=
             -1 ||

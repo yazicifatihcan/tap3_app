@@ -10,7 +10,6 @@ class ModuleTheme implements AppTheme {
   ///Color palette that theme will use.
   AbstractColor appColors;
 
-
   @override
   IconThemeData get iconTheme => IconThemeData(color: appColors.primary);
 
@@ -149,17 +148,17 @@ class ModuleTheme implements AppTheme {
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: appColors.primary,
-          foregroundColor: appColors.onPrimary,
-          disabledBackgroundColor: appColors.secondary,
+          foregroundColor: appColors.onSurface,
+          disabledBackgroundColor: appColors.primary,
           disabledForegroundColor: appColors.onSecondary,
           fixedSize: const Size(double.infinity, 56),
           textStyle: TextStyle(
-            color: appColors.onPrimary,
+            color: appColors.onSurface,
             fontWeight: FontWeight.w800,
             fontSize: 16,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(ModuleRadius.l.value),
+            borderRadius: BorderRadius.circular(ModuleRadius.m.value),
           ),
         ),
       );
@@ -167,6 +166,7 @@ class ModuleTheme implements AppTheme {
   @override
   InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
         filled: true,
+        fillColor: appColors.secondary,
         labelStyle: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,

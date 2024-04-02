@@ -1,10 +1,13 @@
 // ignore_for_file: sort_constructors_first
 
 enum AuthRouteScreens {
-
   loginScreen(
     '/login',
     'loginScreen',
+  ),
+  passwordScreen(
+    '/password',
+    'passwordScreen',
   );
 
   /// Gets the path value for [AuthRouteScreens] enum.
