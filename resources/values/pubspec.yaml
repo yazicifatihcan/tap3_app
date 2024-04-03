@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.9
+  lottie: ^2.7.0
   intl: any
   url_launcher: ^6.2.1
   widgets:
@@ -29,6 +30,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/lottie/
 
   fonts:
     - family: GreycliffCF

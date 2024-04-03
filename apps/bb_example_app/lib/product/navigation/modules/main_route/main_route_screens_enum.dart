@@ -7,6 +7,22 @@ enum MainRouteScreenEnums {
     '/home',
     'homeScreen',
   ),
+  scanQrScreen(
+    '/scanQr',
+    'scanQrScreen',
+  ),
+  paymentScreen(
+    '/payment',
+    'paymentScreen',
+  ),
+  nfcPaymentScreen(
+    '/nfcPayment',
+    'nfcPaymentScreen',
+  ),
+  cardPasscodeScreen(
+    '/cardPasscode',
+    'cardPasscodeScreen',
+  ),
   ;
 
   /// Gets the path value for [MainRouteScreenEnums] enum.

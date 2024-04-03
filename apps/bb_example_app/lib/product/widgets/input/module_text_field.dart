@@ -13,6 +13,7 @@ class ModuleTextField extends StatelessWidget {
     this.onFieldSubmitted,
     this.suffixIcon,
     this.prefixIcon,
+    this.autoFocus,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -21,6 +22,7 @@ class ModuleTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String? labelText;
   final bool obscureText;
+  final bool? autoFocus;
   final void Function(String?)? onFieldSubmitted;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -34,6 +36,7 @@ class ModuleTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
       ),
       controller: controller,
+      autofocus: autoFocus ?? false,
       obscureText: obscureText,
       textInputAction: textInputAction ?? TextInputAction.next,
       onFieldSubmitted: onFieldSubmitted,

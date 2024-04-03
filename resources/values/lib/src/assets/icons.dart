@@ -11,6 +11,30 @@ class IconAssets {
   SvgGeneralImage get circleDoneIcon =>
       const SvgGeneralImage('${baseIconPath}circle_done_icon.svg');
 
+  SvgGeneralImage get copyIcon =>
+      const SvgGeneralImage('${baseIconPath}copy_icon.svg');
+
+  SvgGeneralImage get personIcon =>
+      const SvgGeneralImage('${baseIconPath}person_icon.svg');
+
+  SvgGeneralImage get decimalIcon =>
+      const SvgGeneralImage('${baseIconPath}decimal_icon.svg');
+
+  SvgGeneralImage get deleteIcon =>
+      const SvgGeneralImage('${baseIconPath}delete_icon.svg');
+
+  SvgGeneralImage get payIcon =>
+      const SvgGeneralImage('${baseIconPath}pay_icon.svg');
+
+  SvgGeneralImage get discoverIcon =>
+      const SvgGeneralImage('${baseIconPath}discover_icon.svg');
+
+  SvgGeneralImage get shareIcon =>
+      const SvgGeneralImage('${baseIconPath}share_icon.svg');
+
+  SvgGeneralImage get infoCircle =>
+      const SvgGeneralImage('${baseIconPath}info_circle.svg');
+
   SvgGeneralImage get errorIcon =>
       const SvgGeneralImage('${baseIconPath}error_icon.svg');
 
@@ -46,6 +70,7 @@ class IconAssets {
         nfcMobileIcon,
         qrIcon,
         moreIcon,
+        infoCircle
       ];
 }
 

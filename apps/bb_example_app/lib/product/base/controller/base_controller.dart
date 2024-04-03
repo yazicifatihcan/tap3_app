@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:bb_example_app/product/managers/auth_handler.dart';
+import 'package:bb_example_app/product/navigation/routing_manager.dart';
 import 'package:bb_example_app/product/service/product_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ abstract class BaseControllerInterface extends GetxController {
 
   
 
-  StringValidator get validator => StringValidator(context);
+  StringValidator get validator => StringValidator(RoutingManager.instance.context!);
 
   ///Method to handle async request when [GetxController] onReady triggered.
   ///It handles view status also.

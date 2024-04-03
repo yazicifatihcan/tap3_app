@@ -34,7 +34,7 @@ class DarkColors implements AbstractColor {
   @override
   Color get onTertiaryContainer => const Color(0xFFFFD8E4);
   @override
-  Color get error => const Color(0xFFF2B8B5);
+  Color get error => Colors.red;
   @override
   Color get onError => const Color(0xFF601410);
   @override
@@ -44,7 +44,7 @@ class DarkColors implements AbstractColor {
   @override
   Color get outline => const Color(0xFF938F99);
   @override
-  Color get background => const Color(0xFF1C1B1F);
+  Color get background => const Color(0xFF181A1F);
   @override
   Color get onBackground => const Color(0xFFE6E1E5);
   @override
@@ -66,7 +66,8 @@ class DarkColors implements AbstractColor {
   @override
   Color get surfaceTint => const Color(0xFFD0BCFF);
   @override
-  Color get outlineVariant => const Color(0xFF49454F);
+  Color get outlineVariant => const Color(0xFF21242C);
   @override
   Color get scrim => const Color(0xFF000000);
 }
+

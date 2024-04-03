@@ -6,6 +6,8 @@
     <true/>
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Tap3 requires access to your NFC functionality for card related operations.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

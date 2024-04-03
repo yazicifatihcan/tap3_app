@@ -288,15 +288,15 @@ class ModuleTheme implements AppTheme {
   AppBarTheme get appBarTheme => AppBarTheme(
         titleSpacing: 0,
         elevation: 0,
-        color: appColors.secondary,
+        color: Colors.transparent,
         titleTextStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: appColors.secondary,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: appColors.onSurface,
         ),
         centerTitle: true,
-        actionsIconTheme: IconThemeData(color: appColors.secondary),
-        iconTheme: IconThemeData(color: appColors.secondary),
+        actionsIconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       );
 
   @override
