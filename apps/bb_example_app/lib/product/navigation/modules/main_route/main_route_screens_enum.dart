@@ -23,6 +23,10 @@ enum MainRouteScreenEnums {
     '/cardPasscode',
     'cardPasscodeScreen',
   ),
+  discoverScreen(
+    '/discover',
+    'discoverScreen',
+  ),
   ;
 
   /// Gets the path value for [MainRouteScreenEnums] enum.

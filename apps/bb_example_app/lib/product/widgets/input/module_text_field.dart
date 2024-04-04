@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:values/values.dart';
 
 class ModuleTextField extends StatelessWidget {
   const ModuleTextField({
-    Key? key,
     required this.controller,
+    super.key,
     this.validator,
     this.keyboardType,
     this.textInputAction,
@@ -14,7 +15,8 @@ class ModuleTextField extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.autoFocus,
-  }) : super(key: key);
+    this.hintText,
+  });
 
   final TextEditingController controller;
   final String? Function(String?)? validator;
@@ -26,6 +28,7 @@ class ModuleTextField extends StatelessWidget {
   final void Function(String?)? onFieldSubmitted;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,10 @@ class ModuleTextField extends StatelessWidget {
         labelText: labelText,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
+        hintText: hintText,
+        hintStyle: context.titleMedium.copyWith(
+          color: context.onInverseSurface,
+        ),
       ),
       controller: controller,
       autofocus: autoFocus ?? false,

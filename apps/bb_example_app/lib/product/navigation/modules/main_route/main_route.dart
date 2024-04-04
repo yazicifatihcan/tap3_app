@@ -1,4 +1,5 @@
 import 'package:bb_example_app/features/card_password_screen/card_password_screen.dart';
+import 'package:bb_example_app/features/discover_screen/discover_screen.dart';
 import 'package:bb_example_app/features/home_screen/home_screen.dart';
 import 'package:bb_example_app/features/nfc_payment_screen/nfc_payment_screen.dart';
 import 'package:bb_example_app/features/payment_screen/payment_screen.dart';
@@ -31,8 +32,10 @@ class MainRoute {
       name: MainRouteScreenEnums.nfcPaymentScreen.name,
       path: MainRouteScreenEnums.nfcPaymentScreen.path,
       builder: (context, state) {
-        final args =  state.extra! as double;
-        return NfcPaymentScreen(totalAmount: args,);
+        final args = state.extra! as double;
+        return NfcPaymentScreen(
+          totalAmount: args,
+        );
       },
     ),
     GoRoute(
@@ -41,6 +44,14 @@ class MainRoute {
       builder: (context, state) {
         // final args =  state.extra! as double;
         return const CardPasswordScreen();
+      },
+    ),
+    GoRoute(
+      name: MainRouteScreenEnums.discoverScreen.name,
+      path: MainRouteScreenEnums.discoverScreen.path,
+      builder: (context, state) {
+        // final args =  state.extra! as double;
+        return const DiscoverScreen();
       },
     ),
   ];

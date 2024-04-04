@@ -38,15 +38,17 @@ class Home extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: Obx(() => AnimatedStackedCards(
-                      cards: controller.cards,
-                      selectedIndex: controller.selectedCardIndex,
-                      onTapChangeCard: controller.onTapChangeCard,
-                      onTapMoreOptions: controller.onTapMoreOptions,
-                      onTapShowQr: controller.onTapShowQr,
-                      onTapDiscover: controller.onTapDiscover,
-                      onTapPay: controller.onTapPayment,
-                    ),),
+                child: Obx(
+                  () => AnimatedStackedCards(
+                    cards: controller.cards,
+                    selectedIndex: controller.selectedCardIndex,
+                    onTapChangeCard: controller.onTapChangeCard,
+                    onTapMoreOptions: controller.onTapMoreOptions,
+                    onTapShowQr: controller.onTapShowQr,
+                    onTapDiscover: controller.onTapDiscover,
+                    onTapPay: controller.onTapPayment,
+                  ),
+                ),
               ),
             ],
           ),
@@ -289,7 +291,7 @@ class AnimatedStackedCards extends StatelessWidget {
     required this.onTapChangeCard,
     required this.onTapMoreOptions,
     required this.onTapShowQr,
-    required this.onTapPay, 
+    required this.onTapPay,
     required this.onTapDiscover,
   }) : super(key: key);
 
@@ -316,8 +318,8 @@ class AnimatedStackedCards extends StatelessWidget {
                 onTap: () => onTapChangeCard(i),
                 child: CreditCard(
                   cardItem: cards[i],
-                  onTapMoreOptions: ()=>onTapMoreOptions(cards[i]),
-                  onTapQr: ()=>onTapShowQr(cards[i]),
+                  onTapMoreOptions: () => onTapMoreOptions(cards[i]),
+                  onTapQr: () => onTapShowQr(cards[i]),
                 ),
               ),
             ),
@@ -335,26 +337,29 @@ class AnimatedStackedCards extends StatelessWidget {
               children: [
                 CreditCard(
                   cardItem: cards[selectedIndex],
-                  onTapMoreOptions: ()=>onTapMoreOptions(cards[selectedIndex]),
-                  onTapQr: ()=>onTapShowQr(cards[selectedIndex]),
+                  onTapMoreOptions: () =>
+                      onTapMoreOptions(cards[selectedIndex]),
+                  onTapQr: () => onTapShowQr(cards[selectedIndex]),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(top: ModulePadding.m.value),
+                  padding: EdgeInsets.only(top: ModulePadding.m.value),
                   child: Row(
                     children: [
                       Expanded(
                         child: _ActionCard(
                           icon: const IconAssets().payIcon,
                           label: 'Pay',
-                          onTap: ()=>onTapPay(cards[selectedIndex]),
+                          onTap: () => onTapPay(cards[selectedIndex]),
                         ),
                       ),
-                      SizedBox(width: ModulePadding.s.value,),
+                      SizedBox(
+                        width: ModulePadding.s.value,
+                      ),
                       Expanded(
                         child: _ActionCard(
                           icon: const IconAssets().discoverIcon,
                           label: 'Discover',
-                          onTap: ()=>onTapDiscover(cards[selectedIndex]),
+                          onTap: () => onTapDiscover(cards[selectedIndex]),
                         ),
                       ),
                     ],

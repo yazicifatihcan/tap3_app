@@ -70,4 +70,3 @@ class DarkColors implements AbstractColor {
   @override
   Color get scrim => const Color(0xFF000000);
 }
-

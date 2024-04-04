@@ -14,7 +14,7 @@ class NfcPaymentController extends BaseControllerInterface {
   Future<void> onReady() async {
     await onReadyGeneric(() async {
       if(!await isNfcAvailable()){
-        context.pushReplacementNamed(MainRouteScreenEnums.cardPasscodeScreen.name);
+        context.pushReplacementNamed(MainRouteScreenEnums.cardPasscodeScreen.name,);
         throw AppException('NFC is not available on this device.');
       }
       await NfcManager.instance.startSession(
