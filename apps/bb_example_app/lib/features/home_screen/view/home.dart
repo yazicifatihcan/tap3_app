@@ -79,6 +79,7 @@ class AnimatedSelectedCard extends StatelessWidget {
     return Column(
       children: [
         CreditCard(
+          aspectRatio: isSelected ? .5 : .5,
           cardItem: cardItem,
           onTapMoreOptions: onTapMoreOptions,
           onTapQr: onTapQr,
@@ -147,96 +148,95 @@ class CreditCard extends StatelessWidget {
     required this.cardItem,
     required this.onTapQr,
     required this.onTapMoreOptions,
+    this.aspectRatio,
   }) : super(key: key);
 
   final CardModel cardItem;
+  final double? aspectRatio;
   final VoidCallback onTapQr;
   final VoidCallback onTapMoreOptions;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: SizeConfig.screenWidth(context) - (2 * ModulePadding.l.value),
-      child: Stack(
-        children: [
-          AspectRatio(
-            aspectRatio: 1016 / 638,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(ModuleRadius.m.value),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                    image: Image.network(
-                      cardItem.imageUrl,
-                      fit: BoxFit.cover,
-                    ).image,
-                  ),
+    return Stack(
+      children: [
+        AspectRatio(
+          aspectRatio: aspectRatio ?? 1016 / 638,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(ModuleRadius.m.value),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                image: DecorationImage(
+                  image: Image.network(
+                    cardItem.imageUrl,
+                    fit: BoxFit.cover,
+                  ).image,
                 ),
-                child: const SizedBox(),
               ),
+              child: const SizedBox(),
             ),
           ),
-          Positioned(
-            top: ModulePadding.s.value,
-            right: ModulePadding.s.value,
-            child: Row(
+        ),
+        Positioned(
+          top: ModulePadding.s.value,
+          right: ModulePadding.s.value,
+          child: Row(
+            children: [
+              _CircleOptionIcon(
+                onTap: onTapQr,
+                svg: const IconAssets().qrIcon.svg(),
+              ),
+              SizedBox(
+                width: ModulePadding.xxs.value,
+              ),
+              _CircleOptionIcon(
+                onTap: onTapMoreOptions,
+                svg: const IconAssets().moreIcon.svg(),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+          top: ModulePadding.s.value,
+          left: ModulePadding.s.value,
+          child: _HighlightWidget(
+            child: Text(
+              cardItem.privateKey,
+              style: context.titleLarge.copyWith(color: Colors.black),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: ModulePadding.s.value,
+          left: ModulePadding.s.value,
+          child: _HighlightWidget(
+            child: Text(
+              '#${cardItem.cardNumber}',
+              style: context.titleLarge.copyWith(color: Colors.black),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: ModulePadding.s.value,
+          right: ModulePadding.s.value,
+          child: _HighlightWidget(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _CircleOptionIcon(
-                  onTap: onTapQr,
-                  svg: const IconAssets().qrIcon.svg(),
+                Text(
+                  '~${cardItem.usd} USD',
+                  style: context.titleLarge.copyWith(color: Colors.black),
                 ),
-                SizedBox(
-                  width: ModulePadding.xxs.value,
+                Text(
+                  '${cardItem.matic} MATIC',
+                  style: context.titleLarge.copyWith(color: Colors.black),
                 ),
-                _CircleOptionIcon(
-                  onTap: onTapMoreOptions,
-                  svg: const IconAssets().moreIcon.svg(),
-                )
               ],
             ),
           ),
-          Positioned(
-            top: ModulePadding.s.value,
-            left: ModulePadding.s.value,
-            child: _HighlightWidget(
-              child: Text(
-                cardItem.privateKey,
-                style: context.titleLarge.copyWith(color: Colors.black),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: ModulePadding.s.value,
-            left: ModulePadding.s.value,
-            child: _HighlightWidget(
-              child: Text(
-                '#${cardItem.cardNumber}',
-                style: context.titleLarge.copyWith(color: Colors.black),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: ModulePadding.s.value,
-            right: ModulePadding.s.value,
-            child: _HighlightWidget(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '~${cardItem.usd} USD',
-                    style: context.titleLarge.copyWith(color: Colors.black),
-                  ),
-                  Text(
-                    '${cardItem.matic} MATIC',
-                    style: context.titleLarge.copyWith(color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -315,6 +315,7 @@ class AnimatedStackedCards extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onTapChangeCard(i),
                 child: CreditCard(
+                  aspectRatio: 3,
                   cardItem: cards[i],
                   onTapMoreOptions: ()=>onTapMoreOptions(cards[i]),
                   onTapQr: ()=>onTapShowQr(cards[i]),
