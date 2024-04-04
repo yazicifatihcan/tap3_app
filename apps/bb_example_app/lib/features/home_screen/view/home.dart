@@ -82,6 +82,7 @@ class AnimatedSelectedCard extends StatelessWidget {
       children: [
         CreditCard(
           aspectRatio: isSelected ? .5 : .5,
+          isSelected: isSelected,
           cardItem: cardItem,
           onTapMoreOptions: onTapMoreOptions,
           onTapQr: onTapQr,
@@ -150,12 +151,14 @@ class CreditCard extends StatelessWidget {
     required this.cardItem,
     required this.onTapQr,
     required this.onTapMoreOptions,
+    required this.isSelected,
     this.aspectRatio,
   }) : super(key: key);
 
   final CardModel cardItem;
   final double? aspectRatio;
   final VoidCallback onTapQr;
+  final bool isSelected;
   final VoidCallback onTapMoreOptions;
 
   @override
@@ -198,7 +201,7 @@ class CreditCard extends StatelessWidget {
               )
             ],
           ),
-        ),
+        ).isVisible(value: isSelected),
         Positioned(
           top: ModulePadding.s.value,
           left: ModulePadding.s.value,
@@ -208,7 +211,7 @@ class CreditCard extends StatelessWidget {
               style: context.titleLarge.copyWith(color: Colors.black),
             ),
           ),
-        ),
+        ).isVisible(value: isSelected),
         Positioned(
           bottom: ModulePadding.s.value,
           left: ModulePadding.s.value,
@@ -218,7 +221,7 @@ class CreditCard extends StatelessWidget {
               style: context.titleLarge.copyWith(color: Colors.black),
             ),
           ),
-        ),
+        ).isVisible(value: isSelected),
         Positioned(
           bottom: ModulePadding.s.value,
           right: ModulePadding.s.value,
@@ -237,7 +240,7 @@ class CreditCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
+        ).isVisible(value: isSelected),
       ],
     );
   }
@@ -317,11 +320,12 @@ class AnimatedStackedCards extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onTapChangeCard(i),
                 child: CreditCard(
-                  aspectRatio: 3,
-                  cardItem: cards[i],
-                  onTapMoreOptions: () => onTapMoreOptions(cards[i]),
-                  onTapQr: () => onTapShowQr(cards[i]),
-                ),
+                    isSelected: false,
+                    aspectRatio: 3,
+                    cardItem: cards[i],
+                    onTapMoreOptions: () => onTapMoreOptions(cards[i]),
+                    onTapQr: () => onTapShowQr(cards[i]),
+                  ),
               ),
             ),
 
@@ -337,11 +341,12 @@ class AnimatedStackedCards extends StatelessWidget {
             child: Column(
               children: [
                 CreditCard(
-                  cardItem: cards[selectedIndex],
-                  onTapMoreOptions: () =>
-                      onTapMoreOptions(cards[selectedIndex]),
-                  onTapQr: () => onTapShowQr(cards[selectedIndex]),
-                ),
+                    isSelected: true,
+                    cardItem: cards[selectedIndex],
+                    onTapMoreOptions: () =>
+                        onTapMoreOptions(cards[selectedIndex]),
+                    onTapQr: () => onTapShowQr(cards[selectedIndex]),
+                  ),
                 Padding(
                   padding: EdgeInsets.only(top: ModulePadding.m.value),
                   child: Row(
@@ -374,3 +379,4 @@ class AnimatedStackedCards extends StatelessWidget {
     );
   }
 }
+
