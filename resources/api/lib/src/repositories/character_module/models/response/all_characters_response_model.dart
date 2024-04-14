@@ -8,10 +8,10 @@
 import 'package:api/src/index.dart';
 import 'package:api/src/repositories/character_module/endpoint/characters_path.dart';
 
-///Response to [DioHttpMethod.get]-[CharacterServicePath.characters]
+///Response to [DioHttpMethod.get]-[CharacterServicePath.catalogue]
 class AllCharactersResponseModel
     extends IBaseModel<AllCharactersResponseModel> {
-  ///Response to [DioHttpMethod.get]-[CharacterServicePath.characters]
+  ///Response to [DioHttpMethod.get]-[CharacterServicePath.catalogue]
   AllCharactersResponseModel({
     this.info,
     this.results,

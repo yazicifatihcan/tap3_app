@@ -11,4 +11,6 @@ enum CacheKey {
 
   /// Key that holds selected current lanCode
   lanCode,
+
+  cards,
 }

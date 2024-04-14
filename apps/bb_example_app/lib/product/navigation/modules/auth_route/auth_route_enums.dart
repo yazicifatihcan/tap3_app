@@ -8,7 +8,13 @@ enum AuthRouteScreens {
   passwordScreen(
     '/password',
     'passwordScreen',
-  );
+  ),
+  cardActionsScreen(
+    '/cardActios',
+    'cardActionsScren',
+  ),
+  
+  ;
 
   /// Gets the path value for [AuthRouteScreens] enum.
   final String path;

@@ -11,9 +11,9 @@ import 'package:values/values.dart';
 void main() {
   run(
     EnvironmentConfigModel(
-      appName: 'Prod App',
+      appName: 'Tap3',
       environment: AppEnvironment.production,
-      apiBaseUrl: 'rickandmortyapi.com',
+      apiBaseUrl: 'api.tap3.me',
       socketUrl: 'Socket Url',
     ),
   );

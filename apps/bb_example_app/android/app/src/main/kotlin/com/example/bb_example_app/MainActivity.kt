@@ -1,4 +1,4 @@
-package com.example.bb_example_app
+package com.tap3.me.wallet
 
 import io.flutter.embedding.android.FlutterActivity
 

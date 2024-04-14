@@ -20,10 +20,10 @@ class DashboardController extends BaseControllerInterface {
   }
 
   Future<void> _getAllCharacters() async {
-    characters = await client.authRepository.getAllCharacters().handleRequest(
-      skipExceptionCode: BaseModelStatus.notFound,
-      defaultResponse: AllCharactersResponseModel(),
-    );
+    // characters = await client.authRepository.getAllCharacters().handleRequest(
+    //   skipExceptionCode: BaseModelStatus.notFound,
+    //   defaultResponse: AllCharactersResponseModel(),
+    // );
   }
 
   

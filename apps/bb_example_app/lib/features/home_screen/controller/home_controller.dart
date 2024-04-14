@@ -1,59 +1,58 @@
 // ignore_for_file: inference_failure_on_function_return_type
 
+import 'dart:async';
+
 import 'package:bb_example_app/product/base/controller/base_controller.dart';
+import 'package:bb_example_app/product/managers/card_handler.dart';
+import 'package:bb_example_app/product/managers/wallet_parser.dart';
 import 'package:bb_example_app/product/navigation/modules/main_route/main_route_screens_enum.dart';
 import 'package:bb_example_app/product/widgets/bottom_sheet/option_selection_bottom_sheet.dart';
 import 'package:bb_example_app/product/widgets/bottom_sheet/qr_bottom_sheet.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:values/values.dart';
 
-class HomeController extends BaseControllerInterface {
+class HomeController extends BaseControllerInterface with CardHandler{
   final Rx<int> _selectedCardIndex = Rx(0);
 
   int get selectedCardIndex => _selectedCardIndex.value;
   set selectedCardIndex(int value) => _selectedCardIndex.value = value;
 
-  Barcode? result;
-  QRViewController? controller;
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  final List<CardModel> cards = [
-    CardModel(
-      privateKey: 'privateKey1',
-      cardNumber: '1234',
-      usd: 100,
-      matic: 200,
-      imageUrl: 'https://tap3.me/bgs/gods_5_s.png',
-    ),
-    CardModel(
-      privateKey: 'privateKey2',
-      cardNumber: '9876',
-      usd: 150,
-      matic: 250,
-      imageUrl: 'https://tap3.me/bgs/gods_1_w.png',
-    ),
-    CardModel(
-      privateKey: 'privateKey3',
-      cardNumber: '2468',
-      usd: 200,
-      matic: 300,
-      imageUrl: 'https://tap3.me/bgs/capy.png',
-    ),
-  ];
+  final Rx<List<CardUIModel>> _activeCards = Rx([]);
+
+  List<CardUIModel> get activeCards => _activeCards.value;
+  set activeCards(List<CardUIModel> value) => _activeCards
+    ..firstRebuild = true
+    ..value = value;
+
+  Timer? cardRefresher;
+
 
   @override
   Future<void> onReady() async {
-    await onReadyGeneric(() async {});
+    await onReadyGeneric(() async {
+      await setCards();
+      cardRefresher = Timer.periodic(
+        const Duration(seconds: 2),
+        (timer)=>setCards(),
+      );
+    });
   }
 
-  @override
-  void onClose() {
-    controller?.dispose();
-    super.onClose();
+
+
+  Future<void> setCards()async{
+    await Future.forEach(sessionManager.userCards(), (elem) async {
+      if (activeCards.indexWhere(
+              (element) => element.cardInfo.cardId == elem.cardId) ==
+          -1) {
+        activeCards.add(await elem.cardUiModel());
+      }
+      });
+      activeCards = activeCards;
   }
+
 
   void onTapChangeCard(int index) {
     if (selectedCardIndex != index) {
@@ -64,11 +63,11 @@ class HomeController extends BaseControllerInterface {
   void onTapScanQr() =>
       context.pushNamed(MainRouteScreenEnums.scanQrScreen.name);
 
-  void onTapShowQr(CardModel item) {
-    const QrBottomSheet(qrData: 'qrData').showBottomSheet(context: context);
+  void onTapShowQr(CardUIModel item) {
+    QrBottomSheet(qrData: item.adress).showBottomSheet(context: context);
   }
 
-  void onTapMoreOptions(CardModel item) {
+  void onTapMoreOptions(CardUIModel item) {
     OptionSelectionBottomSheet(
       options: [
         OptionItemModel(
@@ -92,27 +91,16 @@ class HomeController extends BaseControllerInterface {
     ).showBottomSheet(context: context);
   }
 
-  void onTapPayment(CardModel item) => context.pushNamed(
-        MainRouteScreenEnums.paymentScreen.name,
-      );
+  Future<void> onTapPayment(CardUIModel item) async {
+    await context.pushNamed(
+      MainRouteScreenEnums.paymentScreen.name,
+    );
+  }
 
-  void onTapDiscover(CardModel item) => context.pushNamed(
-        MainRouteScreenEnums.discoverScreen.name,
-      );
-}
+  Future<void> onTapAddCard() async {
+    await cardViewProcess(context);
+  }
 
-class CardModel {
-  CardModel({
-    required this.privateKey,
-    required this.cardNumber,
-    required this.usd,
-    required this.matic,
-    required this.imageUrl,
-  });
-
-  final String privateKey;
-  final String cardNumber;
-  final String imageUrl;
-  final double usd;
-  final double matic;
+  Future<void> onTapDiscover(CardUIModel item) async =>
+      item.cardInfo.openPolygonExplorer();
 }

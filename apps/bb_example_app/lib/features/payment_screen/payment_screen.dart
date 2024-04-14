@@ -5,12 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({super.key});
+
+  
+  const PaymentScreen({super.key, this.adress});
+
+  final String? adress; 
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PaymentController>(
-      init: PaymentController(),
+      init: PaymentController(adress: adress),
       builder: (PaymentController controller) {
         return Payment(
           controller: controller,

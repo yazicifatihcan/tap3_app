@@ -12,6 +12,10 @@ class LottieAssets {
         '${baseLottiePath}nfc_animation.json',
       );
 
+  LottieGeneralImage get successAnimation => const LottieGeneralImage(
+        '${baseLottiePath}success_animation.json',
+      );
+
   /// List of all assets
   List<LottieGeneralImage> get values => [
         nfcAnimation,

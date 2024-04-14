@@ -1,6 +1,8 @@
 import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:values/values.dart';
 import 'package:widgets/widget.dart';
 
@@ -9,9 +11,11 @@ class QrBottomSheet extends BottomSheetWidget<void> {
       : super(isScrollControlled: true);
 
   final String qrData;
+  
 
   @override
   Widget build(BuildContext context) {
+    bool isShareLoading = false;
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(ModulePadding.m.value).copyWith(
@@ -58,23 +62,34 @@ class QrBottomSheet extends BottomSheetWidget<void> {
               ),
             ),
             SizedBox(height: ModulePadding.m.value),
-            const Text('0x7131CA84856767fjfh8sjhqak8s88848f8E696'),
+            Text(qrData),
             SizedBox(height: ModulePadding.m.value),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _CircleIconButton(
+                CircleIconButton(
                   icon: const IconAssets().shareIcon.svg(),
                   label: 'Share',
-                  onTap: () {},
+                  onTap: () async{
+                    if(!isShareLoading){
+                      await Share.share(qrData);
+                      isShareLoading=false;
+                    }
+                  },
                 ),
                 SizedBox(
                   width: ModulePadding.m.value,
                 ),
-                _CircleIconButton(
+                CircleIconButton(
                   icon: const IconAssets().copyIcon.svg(),
                   label: 'Copy',
-                  onTap: () {},
+                  onTap: () async{
+                      await Clipboard.setData(ClipboardData(text: qrData));
+                      ToastMessage.showToastMessage(
+                      message: 'Succesfully copied.',
+                      type: ToastMessageType.success,
+                    );
+                  },
                 ),
               ],
             ),
@@ -85,11 +100,12 @@ class QrBottomSheet extends BottomSheetWidget<void> {
   }
 }
 
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({
+class CircleIconButton extends StatelessWidget {
+  const CircleIconButton({
     required this.label,
     required this.onTap,
     required this.icon,
+    super.key,
   });
 
   final String label;
@@ -116,3 +132,4 @@ class _CircleIconButton extends StatelessWidget {
     );
   }
 }
+

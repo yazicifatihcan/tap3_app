@@ -5,6 +5,7 @@ import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
 import 'package:bb_example_app/product/widgets/button/module_button.dart';
 import 'package:bb_example_app/product/widgets/input/module_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:pretty_animated_buttons/pretty_animated_buttons.dart';
 import 'package:values/values.dart';
 
 class CardPassword extends StatelessWidget {
@@ -48,7 +49,7 @@ class CardPassword extends StatelessWidget {
                     style: context.headlineSmall,
                   ),
                   Text(
-                    'Lorem ipsum dolor sit amet.',
+                    'Please enter the password of the card you scanned.',
                     style: context.bodyMedium,
                   ),
                   const Spacer(),

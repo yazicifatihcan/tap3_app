@@ -44,3 +44,5 @@ class NfcPaymentController extends BaseControllerInterface {
   void onTapCancel() => context.pop();
 
 }
+
+

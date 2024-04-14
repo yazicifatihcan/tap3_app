@@ -30,6 +30,7 @@ class Payment extends StatelessWidget {
           child:  Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              if(controller.adress!=null) Text('TO:\n${controller.adress!}'),
               Expanded(
                 child: Center(
                   child: Obx(()=>Text(
@@ -43,7 +44,7 @@ class Payment extends StatelessWidget {
               Obx(()=>
               ModuleButton.primary(
                   onTap: controller.onTapNext,
-                  title: 'Next',
+                  title: controller.adress!=null ? 'Confirm' : 'Next',
                   bgColor: !controller.isAmountValid ? Colors.grey : null,
               ),),
               SizedBox(height: ModulePadding.m.value,),

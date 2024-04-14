@@ -10,7 +10,7 @@ import 'package:values/values.dart';
 void main() {
   run(
     EnvironmentConfigModel(
-      appName: 'Dev App',
+      appName: 'Tap3',
       environment: AppEnvironment.development,
       apiBaseUrl: 'rickandmortyapi.com',
       socketUrl: 'Socket Url',

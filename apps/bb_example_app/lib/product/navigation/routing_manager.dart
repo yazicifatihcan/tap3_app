@@ -1,5 +1,7 @@
+import 'package:bb_example_app/features/auth/password_screen/password_screen.dart';
 import 'package:bb_example_app/features/index.dart';
 import 'package:bb_example_app/product/managers/auth_handler.dart';
+import 'package:bb_example_app/product/managers/wallet_parser.dart';
 import 'package:bb_example_app/product/navigation/modules/auth_route/auth_route.dart';
 import 'package:bb_example_app/product/navigation/modules/auth_route/auth_route_enums.dart';
 import 'package:bb_example_app/product/navigation/modules/initial_route/initial_route.dart';
@@ -39,7 +41,17 @@ class RoutingManager extends AbstractRoutingManager {
     routes: [
       InitialRoute.route,
       AuthRoute.route,
-      ...MainRoute.route,
+      ...MainRoute.route, 
+      GoRoute(
+        name: AuthRouteScreens.passwordScreen.name,
+        path: AuthRouteScreens.passwordScreen.path,
+        pageBuilder: (context, state) {
+          final args = state.extra! as CardInfoModel;
+          return NoTransitionPage(
+            child: PasswordScreen(card:args),
+          );
+        },
+      ),
     ],
     redirect: (context, state) {
       final authHandler = SessionHandler.instance;
@@ -77,7 +89,9 @@ class RoutingManager extends AbstractRoutingManager {
             -1 ||
         currentName == InitialRouteScreens.splashScreen.path;
 
-    return isUnauthorized && isNotAuthScreen;
+    return isUnauthorized &&
+        isNotAuthScreen &&
+        currentName != MainRouteScreenEnums.cardActionsScreen.path;
   }
 
   bool isAuthorizedAndAuthScreen(String currentName) {
@@ -87,7 +101,9 @@ class RoutingManager extends AbstractRoutingManager {
                 .indexWhere((element) => element.path == currentName) !=
             -1 ||
         currentName == InitialRouteScreens.splashScreen.path;
-
+    if(currentName == AuthRouteScreens.passwordScreen.path){
+      return false;
+    }
     return isAuthorized && isAuthScreen;
   }
 }

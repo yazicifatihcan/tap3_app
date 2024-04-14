@@ -102,9 +102,10 @@ class DioClient {
     Object bodyParam,
     Map<String, String>? customHeaderParams,
     Map<String, dynamic>? queryParams,
+    String? otherBaseUrl,
   ) async {
     final uri = Uri.https(
-      baseUrl,
+      otherBaseUrl ?? baseUrl,
       (pathBody.isNotEmpty ? pathBody : ''),
       queryParams,
     );
@@ -168,6 +169,7 @@ class DioClient {
     Map<String, String>? headerParam,
     bool? forceRefresh,
     Map<String, dynamic>? queryParams,
+    String? otherBaseUrl,
   }) async {
     return _sendRequest(
       method,
@@ -175,6 +177,7 @@ class DioClient {
       bodyParam,
       headerParam,
       queryParams,
+      otherBaseUrl,
     );
   }
 }

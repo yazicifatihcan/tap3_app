@@ -44,18 +44,12 @@ class OptionSelectionBottomSheet extends BottomSheetWidget<void> {
                               .showBottomSheet(context: context);
                         }
                     },
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Text(
-                              item.title,
-                              style: context.titleLarge
-                                  .copyWith(color: item.color),
-                            ),
-                          ),
-                        item.icon.svg(color: item.color),
-                      ],
-                    ));
+                    child: TextWithIcon(
+                      title: item.title,
+                      icon: item.icon.svg(color: item.color),
+                      color: item.color,
+                    ),
+                  );
                 },
                 separatorBuilder: (context, index) => SizedBox(
                   height: ModulePadding.m.value,
@@ -66,6 +60,40 @@ class OptionSelectionBottomSheet extends BottomSheetWidget<void> {
             SizedBox(height: ModulePadding.xl.value),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TextWithIcon extends StatelessWidget {
+   TextWithIcon({
+    super.key,
+    required this.title,
+    required this.icon,
+    this.onTap,
+    this.color,
+  });
+
+  final String title;
+  final Widget icon;
+  final VoidCallback? onTap;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: ()=>onTap?.call(),
+      child: Row(
+        children: [
+          Expanded(
+              child: Text(
+                title,
+                style: context.titleLarge
+                    .copyWith(color: color),
+              ),
+            ),
+          icon,
+        ],
       ),
     );
   }

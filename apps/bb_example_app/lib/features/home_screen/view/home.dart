@@ -1,11 +1,13 @@
 import 'package:bb_example_app/features/home_screen/controller/home_controller.dart';
 import 'package:bb_example_app/product/base/base_view.dart';
+import 'package:bb_example_app/product/managers/wallet_parser.dart';
 import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
 import 'package:bb_example_app/product/utility/enums/module_radius_enums.dart';
-import 'package:common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:neon_widgets/neon_widgets.dart';
 import 'package:values/values.dart';
+import 'package:widgets/widget.dart';
 
 class Home extends StatelessWidget {
   const Home({required this.controller, super.key});
@@ -16,6 +18,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: controller.scaffoldKey,
+      floatingActionButton: Obx(
+        () => FloatingActionButton(
+          onPressed: controller.onTapAddCard,
+          child: const Icon(Icons.wifi),
+        ).isVisible(value: controller.loadingStatus.isLoaded),
+      ),
       appBar: AppBar(
         title: const Text('My Wallet'),
         actions: [
@@ -40,7 +48,8 @@ class Home extends StatelessWidget {
               Expanded(
                 child: Obx(
                   () => AnimatedStackedCards(
-                    cards: controller.cards,
+                    maticPrice:controller.sessionManager.matic.quotes!.usd!.price!,
+                    cards: controller.activeCards,
                     selectedIndex: controller.selectedCardIndex,
                     onTapChangeCard: controller.onTapChangeCard,
                     onTapMoreOptions: controller.onTapMoreOptions,
@@ -58,61 +67,6 @@ class Home extends StatelessWidget {
   }
 }
 
-class AnimatedSelectedCard extends StatelessWidget {
-  const AnimatedSelectedCard({
-    Key? key,
-    required this.cardItem,
-    required this.onTapMoreOptions,
-    required this.onTapQr,
-    required this.isSelected,
-    required this.onTapPay,
-    required this.onTapDiscover,
-  }) : super(key: key);
-
-  final CardModel cardItem;
-  final VoidCallback onTapMoreOptions;
-  final VoidCallback onTapQr;
-  final void Function(CardModel) onTapPay;
-  final void Function(CardModel) onTapDiscover;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CreditCard(
-          aspectRatio: isSelected ? .5 : .5,
-          isSelected: isSelected,
-          cardItem: cardItem,
-          onTapMoreOptions: onTapMoreOptions,
-          onTapQr: onTapQr,
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: ModulePadding.m.value),
-          child: Row(
-            children: [
-              Expanded(
-                  child: _ActionCard(
-                icon: const IconAssets().payIcon,
-                label: 'Pay',
-                onTap: () => onTapPay(cardItem),
-              )),
-              SizedBox(
-                width: ModulePadding.s.value,
-              ),
-              Expanded(
-                  child: _ActionCard(
-                icon: const IconAssets().discoverIcon,
-                label: 'Discover',
-                onTap: () => onTapDiscover(cardItem),
-              )),
-            ],
-          ),
-        ).isVisible(value: isSelected),
-      ],
-    );
-  }
-}
 
 class _ActionCard extends StatelessWidget {
   const _ActionCard({
@@ -130,14 +84,34 @@ class _ActionCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: DecoratedBox(
-        decoration: BoxDecoration(color: context.outlineVariant),
+        decoration: BoxDecoration(color: context.outlineVariant.withOpacity(.4)),
         child: Padding(
-          padding: EdgeInsets.all(ModulePadding.xs.value),
-          child: Column(
-            children: [
-              icon.svg(),
-              Text(label),
-            ],
+          padding: const EdgeInsets.all(8.0),
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: context.outlineVariant..withOpacity(.6)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: context.outlineVariant),
+                child: Padding(
+                  padding: EdgeInsets.all(ModulePadding.xs.value),
+                  child: Column(
+                    children: [
+                      icon.svg(),
+                      const NeonPoint(
+                        lightSpreadRadius: 22,
+                      ),
+                      FlickerNeonText(
+                        text: label,
+                        flickerTimeInMilliSeconds: 1000,
+                        spreadColor: context.primary,
+                        randomFlicker: false,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -149,99 +123,106 @@ class CreditCard extends StatelessWidget {
   const CreditCard({
     Key? key,
     required this.cardItem,
-    required this.onTapQr,
-    required this.onTapMoreOptions,
+    this.onTapQr,
+    this.onTapMoreOptions,
     required this.isSelected,
+    required this.maticPrice,
     this.aspectRatio,
   }) : super(key: key);
 
-  final CardModel cardItem;
+  final CardUIModel cardItem;
   final double? aspectRatio;
-  final VoidCallback onTapQr;
+  final VoidCallback? onTapQr;
   final bool isSelected;
-  final VoidCallback onTapMoreOptions;
+  final double maticPrice;
+  final VoidCallback? onTapMoreOptions;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AspectRatio(
-          aspectRatio: aspectRatio ?? 1016 / 638,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(ModuleRadius.m.value),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                image: DecorationImage(
-                  image: Image.network(
-                    cardItem.imageUrl,
-                    fit: BoxFit.cover,
-                  ).image,
+    return NeonContainer(
+      lightBlurRadius: 20,
+      borderRadius: BorderRadius.circular(ModuleRadius.m.value),
+      spreadColor: cardItem.bgColor(),
+      child: Stack(
+        children: [
+          AspectRatio(
+            aspectRatio: aspectRatio ?? 1016 / 638,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(ModuleRadius.m.value),
+              child: GeneralCachedImage(
+                imageUrl: cardItem.imageUrl,
+                externalImageWidget:(context,provider)=> DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: cardItem.bgColor(),
+                    image: DecorationImage(
+                      image:provider,
+                      fit: BoxFit.cover
+                    ),
+                  ),
                 ),
               ),
-              child: const SizedBox(),
             ),
           ),
-        ),
-        Positioned(
-          top: ModulePadding.s.value,
-          right: ModulePadding.s.value,
-          child: Row(
-            children: [
-              _CircleOptionIcon(
-                onTap: onTapQr,
-                svg: const IconAssets().qrIcon.svg(),
-              ),
-              SizedBox(
-                width: ModulePadding.xxs.value,
-              ),
-              _CircleOptionIcon(
-                onTap: onTapMoreOptions,
-                svg: const IconAssets().moreIcon.svg(),
-              )
-            ],
-          ),
-        ).isVisible(value: isSelected),
-        Positioned(
-          top: ModulePadding.s.value,
-          left: ModulePadding.s.value,
-          child: _HighlightWidget(
-            child: Text(
-              cardItem.privateKey,
-              style: context.titleLarge.copyWith(color: Colors.black),
-            ),
-          ),
-        ).isVisible(value: isSelected),
-        Positioned(
-          bottom: ModulePadding.s.value,
-          left: ModulePadding.s.value,
-          child: _HighlightWidget(
-            child: Text(
-              '#${cardItem.cardNumber}',
-              style: context.titleLarge.copyWith(color: Colors.black),
-            ),
-          ),
-        ).isVisible(value: isSelected),
-        Positioned(
-          bottom: ModulePadding.s.value,
-          right: ModulePadding.s.value,
-          child: _HighlightWidget(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Positioned(
+            top: ModulePadding.s.value,
+            right: ModulePadding.s.value,
+            child: Row(
               children: [
-                Text(
-                  '~${cardItem.usd} USD',
-                  style: context.titleLarge.copyWith(color: Colors.black),
+                _CircleOptionIcon(
+                  onTap: ()=>onTapQr?.call(),
+                  svg: const IconAssets().qrIcon.svg(),
+                ).isVisible(value: onTapQr!=null),
+                SizedBox(
+                  width: ModulePadding.xxs.value,
                 ),
-                Text(
-                  '${cardItem.matic} MATIC',
-                  style: context.titleLarge.copyWith(color: Colors.black),
-                ),
+                _CircleOptionIcon(
+                  onTap: ()=>onTapMoreOptions?.call(),
+                  svg: const IconAssets().moreIcon.svg(),
+                ).isVisible(value: onTapMoreOptions!=null),
               ],
             ),
-          ),
-        ).isVisible(value: isSelected),
-      ],
+          ).isVisible(value: isSelected),
+          Positioned(
+            top: ModulePadding.s.value,
+            left: ModulePadding.s.value,
+            child: _HighlightWidget(
+              child: Text(
+                cardItem.adress.trimString(),
+                style: context.titleLarge.copyWith(color: Colors.black),
+              ),
+            ),
+          ).isVisible(value: isSelected),
+          Positioned(
+            bottom: ModulePadding.s.value,
+            left: ModulePadding.s.value,
+            child: _HighlightWidget(
+              child: Text(
+                cardItem.cardId,
+                style: context.titleLarge.copyWith(color: Colors.black),
+              ),
+            ),
+          ).isVisible(value: isSelected),
+          Positioned(
+            bottom: ModulePadding.s.value,
+            right: ModulePadding.s.value,
+            child: _HighlightWidget(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '~${(cardItem.etherBalance*maticPrice).toStringAsFixed(2)} USD',
+                    style: context.titleLarge.copyWith(color: Colors.black),
+                  ),
+                  Text(
+                    '${cardItem.etherBalance} MATIC',
+                    style: context.titleLarge.copyWith(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ).isVisible(value: isSelected),
+        ],
+      ),
     );
   }
 }
@@ -296,15 +277,17 @@ class AnimatedStackedCards extends StatelessWidget {
     required this.onTapShowQr,
     required this.onTapPay,
     required this.onTapDiscover,
+    required this.maticPrice,
   }) : super(key: key);
 
-  final List<CardModel> cards;
+  final List<CardUIModel> cards;
   final int selectedIndex;
   final void Function(int) onTapChangeCard;
-  final void Function(CardModel) onTapMoreOptions;
-  final void Function(CardModel) onTapShowQr;
-  final void Function(CardModel) onTapPay;
-  final void Function(CardModel) onTapDiscover;
+  final void Function(CardUIModel) onTapMoreOptions;
+  final void Function(CardUIModel) onTapShowQr;
+  final void Function(CardUIModel) onTapPay;
+  final void Function(CardUIModel) onTapDiscover;
+  final double maticPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -321,6 +304,7 @@ class AnimatedStackedCards extends StatelessWidget {
                 onTap: () => onTapChangeCard(i),
                 child: CreditCard(
                     isSelected: false,
+                    maticPrice: maticPrice,
                     aspectRatio: 3,
                     cardItem: cards[i],
                     onTapMoreOptions: () => onTapMoreOptions(cards[i]),
@@ -341,12 +325,17 @@ class AnimatedStackedCards extends StatelessWidget {
             child: Column(
               children: [
                 CreditCard(
+                  maticPrice:maticPrice,
                     isSelected: true,
                     cardItem: cards[selectedIndex],
                     onTapMoreOptions: () =>
                         onTapMoreOptions(cards[selectedIndex]),
                     onTapQr: () => onTapShowQr(cards[selectedIndex]),
                   ),
+                SizedBox(
+                  height: ModulePadding.m.value,
+                ),
+
                 Padding(
                   padding: EdgeInsets.only(top: ModulePadding.m.value),
                   child: Row(
@@ -364,13 +353,14 @@ class AnimatedStackedCards extends StatelessWidget {
                       Expanded(
                         child: _ActionCard(
                           icon: const IconAssets().discoverIcon,
-                          label: 'Discover',
+                          label: 'Explore',
                           onTap: () => onTapDiscover(cards[selectedIndex]),
                         ),
                       ),
                     ],
                   ),
-                )
+                ),
+
               ],
             ),
           ),
@@ -379,4 +369,5 @@ class AnimatedStackedCards extends StatelessWidget {
     );
   }
 }
+
 

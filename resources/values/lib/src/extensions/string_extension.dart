@@ -17,4 +17,18 @@ extension StringExtension on String {
     }
   }
 
+  String trimString({
+    int showFromStartNumber = 6,
+    int showFromEndNumber = 5,
+    int totalNumber = 14,
+    String overflowChar = '.',
+  }) {
+    final toSplitStr =
+        substring(showFromStartNumber, length - showFromEndNumber);
+
+    final splittedStrs = split(toSplitStr);
+    final remainingStrCount =
+        totalNumber - (splittedStrs[0].length + splittedStrs[1].length);
+    return splittedStrs[0] + overflowChar * remainingStrCount + splittedStrs[1];
+  }
 }

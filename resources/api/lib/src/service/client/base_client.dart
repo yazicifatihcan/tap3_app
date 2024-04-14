@@ -21,6 +21,7 @@ abstract class BaseClient {
 
     ///only use If requestModel is null
     Object? bodyParam,
+    String? otherBaseUrl,
     IBaseModel<T>? responseModel,
     Map<String, dynamic>? queryParams,
     Map<String, String>? headerParam,
@@ -33,6 +34,7 @@ abstract class BaseClient {
         bodyParam: requestModel?.toJson() ?? (bodyParam ?? {}),
         queryParams: queryParams,
         headerParam: headerParam,
+        otherBaseUrl: otherBaseUrl,
       );
       if (response!.statusCode == (successStatus ?? HttpStatus.ok)) {
         R? returnResponse;

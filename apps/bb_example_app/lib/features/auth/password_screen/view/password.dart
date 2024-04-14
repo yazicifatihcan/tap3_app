@@ -38,34 +38,38 @@ class Password extends StatelessWidget {
           controller: controller,
           child: Padding(
             padding: EdgeInsets.all(ModulePadding.s.value),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Enter Password',
-                  style: context.headlineSmall,
-                ),
-                Text(
-                  'Lorem ipsum dolor sit amet.',
-                  style: context.bodyMedium,
-                ),
-                const Spacer(),
-                ModuleTextField(
-                  obscureText: true,
-                  controller: TextEditingController(),
-                  suffixIcon: const Icon(
-                    Icons.remove_red_eye,
+            child: Form(
+              key: controller.fKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Enter Password',
+                    style: context.headlineSmall,
                   ),
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: context.primary,
+                  Text(
+                    'Please enter the password of the card you scanned.',
+                    style: context.bodyMedium,
                   ),
-                ),
-                const Spacer(
-                  flex: 10,
-                ),
-              ],
+                  const Spacer(),
+                  ModuleTextField(
+                    obscureText: true,
+                    controller: controller.cText,
+                    validator: controller.validator.isNotEmptyController,
+                    suffixIcon: const Icon(
+                      Icons.remove_red_eye,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: context.primary,
+                    ),
+                  ),
+                  const Spacer(
+                    flex: 10,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -57,7 +57,6 @@ class ApplicationInitialize {
     //       .showNotification(title: title, body: body),
     // );
 
-    await AppInfo.init();
 
     LocalNotificationHandler();
 
