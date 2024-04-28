@@ -9,7 +9,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:tuple/tuple.dart';
 
 class EncryptionService {
-  String encryptAESCryptoJS(String plainText, String passphrase) {
+String encryptAESCryptoJS(String plainText, String passphrase) {
   try {
     final salt = genRandomWithNonZero(8);
     var keyndIV = deriveKeyAndIV(passphrase, salt);
@@ -29,7 +29,7 @@ class EncryptionService {
 
 String decryptAESCryptoJS(String encrypted, String passphrase) {
   try {
-    Uint8List encryptedBytesWithSalt = base64.decode(encrypted);  
+    Uint8List encryptedBytesWithSalt = base64.decode(encrypted);
 
     Uint8List encryptedBytes =
         encryptedBytesWithSalt.sublist(16, encryptedBytesWithSalt.length);
@@ -39,7 +39,7 @@ String decryptAESCryptoJS(String encrypted, String passphrase) {
     final iv = encrypt.IV(keyndIV.item2);
 
     final encrypter = encrypt.Encrypter(
-        encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: null));
+        encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: "PKCS7"));
     final decrypted =
         encrypter.decrypt64(base64.encode(encryptedBytes), iv: iv);
     return decrypted;

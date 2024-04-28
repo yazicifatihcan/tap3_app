@@ -1,4 +1,5 @@
 import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
+import 'package:bb_example_app/product/widgets/bottom_sheet/qr_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -6,8 +7,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:values/values.dart';
 import 'package:widgets/widget.dart';
 
-class QrBottomSheet extends BottomSheetWidget<void> {
-  const QrBottomSheet({required this.qrData, super.key})
+class PrivateKeyBottomSheet extends BottomSheetWidget<void> {
+  const PrivateKeyBottomSheet({required this.qrData, super.key})
       : super(isScrollControlled: true);
 
   final String qrData;
@@ -27,33 +28,11 @@ class QrBottomSheet extends BottomSheetWidget<void> {
             const BottomSheetHoldAndDrag(),
             SizedBox(height: ModulePadding.l.value),
             Text(
-              'MY QR CODE',
+              'MY PRIVATE KEY',
               style: context.titleLarge,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: ModulePadding.m.value),
-            // Card(
-            //   color: context.primary.withOpacity(.2),
-            //   child: Padding(
-            //     padding: EdgeInsets.all(ModulePadding.xs.value),
-            //     child: Row(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         const IconAssets().infoCircle.svg(),
-            //         SizedBox(
-            //           width: ModulePadding.xxs.value,
-            //         ),
-            //         Expanded(
-            //           child: Text(
-            //             'Send only Bitcoin (BTC) to this adress. Sending any other coins may result in permanent loss.',
-            //             style: context.bodySmall,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(height: ModulePadding.m.value),
             Center(
               child: QrImageView(
                 data: qrData,
@@ -95,39 +74,6 @@ class QrBottomSheet extends BottomSheetWidget<void> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CircleIconButton extends StatelessWidget {
-  const CircleIconButton({
-    required this.label,
-    required this.onTap,
-    required this.icon,
-    super.key,
-  });
-
-  final String label;
-  final VoidCallback onTap;
-  final Widget icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: context.background,
-            child: icon,
-          ),
-          SizedBox(
-            width: ModulePadding.xs.value,
-          ),
-          Text(label),
-        ],
       ),
     );
   }

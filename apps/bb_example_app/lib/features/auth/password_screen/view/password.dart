@@ -49,17 +49,15 @@ class Password extends StatelessWidget {
                     style: context.headlineSmall,
                   ),
                   Text(
-                    'Please enter the password of the card you scanned.',
+                    'Please enter the password of the card.',
                     style: context.bodyMedium,
                   ),
                   const Spacer(),
                   ModuleTextField(
+                    autoFocus: true,
                     obscureText: true,
                     controller: controller.cText,
                     validator: controller.validator.isNotEmptyController,
-                    suffixIcon: const Icon(
-                      Icons.remove_red_eye,
-                    ),
                     prefixIcon: Icon(
                       Icons.lock,
                       color: context.primary,

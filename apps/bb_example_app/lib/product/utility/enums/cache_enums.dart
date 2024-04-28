@@ -3,6 +3,8 @@ enum CacheKey {
   /// Key that holds current user token
   token,
 
+  selectedCardAdress,
+
   /// Key that holds if user logged in or not
   loggedIn,
 

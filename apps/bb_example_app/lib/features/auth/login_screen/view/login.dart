@@ -1,15 +1,19 @@
+
 import 'package:bb_example_app/features/auth/login_screen/controller/login_controller.dart';
 import 'package:bb_example_app/product/base/base_view.dart';
+import 'package:bb_example_app/product/managers/wallet_parser.dart';
+import 'package:bb_example_app/product/utility/app_constants.dart';
 import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
 import 'package:bb_example_app/product/widgets/button/module_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:values/values.dart';
-
+import 'package:web3dart/web3dart.dart';
 
 ///Widget for Login Screen View
 class Login extends StatelessWidget {
   ///Widget for Login Screen View
-  const Login({required this.controller, super.key});
+  Login({required this.controller, super.key});
 
   final LoginController controller;
 
@@ -26,6 +30,27 @@ class Login extends StatelessWidget {
                 color: Colors.white,
               ),
         ),
+
+        // floatingActionButton: FloatingActionButton(onPressed: () async {
+        //   var plainText = CardInfoModel(
+        //           url:
+        //               'https://tap3.me/#CtEk2Gfx0w91la8i4u7TWbcD5Ro=:U2FsdGVkX1/jMsMjHJNufAfXSP15LD0y+TsuWRUepl84SkCUNhUvYDoRb+A0vb0qWVh12B4A2WFR2qvxv8SXhQ==:1l')
+        //       .privateKey;
+        //   var pass = 'tap3';
+
+        //   // EncryptionService().decryptAESCryptoJS(plainText, pass);
+        //   // controller.priv =EncryptionService().decryptAESCryptoJS(plainText, pass);
+        //   var httpClient = Client();
+        //   var ethClient = Web3Client(provider, httpClient);
+
+        //   // final credentials = EthPrivateKey.fromHex(bytesToHex(utf8.encode(controller.priv!)));
+
+        //   // print(credentials.address.hex);
+        //   print(CardInfoModel(
+        //           url:
+        //               'https://tap3.me/#CtEk2Gfx0w91la8i4u7TWbcD5Ro=:U2FsdGVkX1/jMsMjHJNufAfXSP15LD0y+TsuWRUepl84SkCUNhUvYDoRb+A0vb0qWVh12B4A2WFR2qvxv8SXhQ==:1l')
+        //       .adressToDisplay);
+        // }),
 
         ///Body
         body: BaseView<LoginController>(
@@ -61,8 +86,9 @@ class Login extends StatelessWidget {
                 ).slideAnimation(order: 5),
                 SizedBox(height: ModulePadding.s.value),
                 ModuleButton.secondary(
-                        onTap: controller.onTapHelp, title: 'Help',)
-                    .slideAnimation(order: 6),
+                  onTap: controller.onTapHelp,
+                  title: 'Help',
+                ).slideAnimation(order: 6),
                 const Spacer(),
               ],
             ),

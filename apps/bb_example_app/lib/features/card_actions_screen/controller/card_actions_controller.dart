@@ -1,9 +1,12 @@
 // ignore_for_file: inference_failure_on_function_return_type
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bb_example_app/product/base/controller/base_controller.dart';
+import 'package:bb_example_app/product/managers/auth_handler.dart';
 import 'package:bb_example_app/product/managers/wallet_parser.dart';
 import 'package:bb_example_app/product/navigation/modules/auth_route/auth_route_enums.dart';
 import 'package:bb_example_app/product/navigation/modules/main_route/main_route_screens_enum.dart';
+import 'package:bb_example_app/product/navigation/routing_manager.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:go_router/go_router.dart';
@@ -43,16 +46,31 @@ class CardActionsController extends BaseControllerInterface {
     );
   }
 
-  bool isCardAlreadyExist (){
+  bool isCardAlreadyExist() {
     final userCards = sessionManager.userCards();
-    if(userCards.isEmpty){
+    if (userCards.isEmpty) {
       return false;
     }
-    return userCards.indexWhere((element) => element.url==card.url)!=-1;
+    return userCards.indexWhere((element) => element.cardId == card.cardId) != -1;
   }
 
   Future<void> onTapAddCard() async {
-    await context.pushNamed(AuthRouteScreens.passwordScreen.name, extra: card);
+    final res = await context.pushNamed(AuthRouteScreens.passwordScreen.name,
+        extra: card);
+    if (res != null) {
+      await AwesomeDialog(
+        context: RoutingManager.instance.context!,
+        dialogType: DialogType.success,
+        animType: AnimType.topSlide,
+        title: 'Card Added',
+        desc: 'Card added to your wallet succesfully.',
+        btnOkOnPress: () {},
+      ).show();
+      await sessionManager.addUserCard(card);
+      if (sessionManager.userAuthStatus == UserAuthStatus.authorized) {
+        context.goNamed(MainRouteScreenEnums.homeScreen.name);
+      }
+    }
   }
 
   Future<void> onTapAddMakePayment() async {

@@ -1,6 +1,7 @@
 // ignore_for_file: use_string_buffers, parameter_assignments
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:api/api.dart';
 import 'package:bb_example_app/product/managers/encryption_service.dart';
@@ -59,42 +60,28 @@ class CardInfoModel {
   String get privateKey => getParams()[1];
   // EncryptionService().base64ToHex(getParams()[1]);
 
-  String deCryptedPrivateKey(String password) {
-
-    List<int> decodedBytes = base64.decode(privateKey);
-    String decodedString = utf8.decode(decodedBytes);
-    String encodedString = base64.encode(utf8.encode(decodedString));
-
-  
-    final decrypted = EncryptionService().decryptAESCryptoJS(
-      encodedString,
-      password,
-    );
-    if (encodedString.length != 64) {
-      throw AppException('Decryption failed.');
-    }
-    return decrypted;
-  }
-
-  void changeCardPassword(
+  String generateNewUrlWithPassword(
       {required String newPassword, required String oldPassword}) {
-    final decryptedPrivateKey =  deCryptedPrivateKey(oldPassword);
+    try {
+      final decryptedPrivateKey =
+          EncryptionService().decryptAESCryptoJS(getParams()[1], oldPassword);
 
-    final encrypted = EncryptionService().encryptAESCryptoJS(
-      decryptedPrivateKey,
-      newPassword,
-    );
-
+      final encrypted = EncryptionService().encryptAESCryptoJS(
+        decryptedPrivateKey,
+        newPassword,
+      );
+      final newUrl = 'https://tap3.me/#' +
+          getParams()[0] +
+          ':' +
+          encrypted +
+          ':' +
+          getParams()[2];
+      return newUrl;
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  String generateNewUrl(String encryptedPrivateKey) {
-    final baseString = url;
-    final newCardUrl= baseString.replaceFirst(getParams()[1],encryptedPrivateKey);
-
-    privateKey;
-        'https://tap3.me/#CtEk2Gfx0w91la8i4u7TWbcD5Ro=:U2FsdGVkX1/jMsMjHJNufAfXSP15LD0y+TsuWRUepl84SkCUNhUvYDoRb+A0vb0qWVh12B4A2WFR2qvxv8SXhQ==:1l';
-    return '';
-  }
 
   String get adress => EncryptionService().base64ToHex(getParams()[0]);
 
@@ -121,6 +108,16 @@ class CardInfoModel {
       await 'https://polygonscan.com/address/$adressToDisplay'.launchLink();
     } catch (e) {
       rethrow;
+    }
+  }
+
+
+  bool checkCardPassword(String password) {
+    try {
+      EncryptionService().decryptAESCryptoJS(privateKey, password);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

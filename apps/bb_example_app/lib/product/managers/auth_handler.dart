@@ -17,11 +17,15 @@ class SessionHandler extends ChangeNotifier {
   static SessionHandler get instance => _instance;
 
   final Rx<MaticPriceResponseModel> _matic = Rx(MaticPriceResponseModel());
+  final Rx<String?> _selectedCardAdress = Rx(null);
 
   MaticPriceResponseModel get matic => _matic.value;
   set matic(MaticPriceResponseModel value) => _matic
     ..firstRebuild = true
     ..value = value;
+
+  String? get selectedCardAdress => _selectedCardAdress.value;
+  set selectedCardAdress(String? value) => _selectedCardAdress.value = value;
 
 
   UserAuthStatus _userAuthStatus = UserAuthStatus.notInitialized;
@@ -33,8 +37,10 @@ class SessionHandler extends ChangeNotifier {
   }
 
   Future<void> init() async {
-    try{await _initializeAuthStatus();
+    try{
+    await _initializeAuthStatus();
     await loadPrice();
+    selectedCardAdress = LocaleManager.instance.getStringValue(key: CacheKey.selectedCardAdress.name);
     Timer.periodic(const Duration(minutes: 1), (timer) async {
       await loadPrice();
     });}
@@ -65,7 +71,7 @@ class SessionHandler extends ChangeNotifier {
 
   void onAuthStatusChanged() {
     if (userAuthStatus == UserAuthStatus.authorized) {
-      
+
     } else if (userAuthStatus == UserAuthStatus.unAuthorized) {
       setUserCards([]);
     }
@@ -76,6 +82,7 @@ class SessionHandler extends ChangeNotifier {
   Future<void> logOut() async {
     await Future.wait([
       LocaleManager.instance.removeAt(CacheKey.token.name),
+      LocaleManager.instance.removeAt(CacheKey.selectedCardAdress.name),
       setLoggedIn(value: false),
     ]);
     // currentUser = UserData();
@@ -128,8 +135,9 @@ class SessionHandler extends ChangeNotifier {
     if (cardIndex == -1) {
       throw AppException('Card is not added to your wallet.');
     }
-    cardList..removeAt(cardIndex)
-    ..insert(cardIndex, newCard);
+    cardList.removeAt(cardIndex);
+    
+    cardList.insert(cardIndex, newCard);
     await setUserCards(cardList);
   }
 
@@ -144,9 +152,14 @@ class SessionHandler extends ChangeNotifier {
     if (cardIndex == -1) {
       throw AppException('Card not found.');
     }
+    if(selectedCardAdress==value.adressToDisplay && !shouldInitializeAuth){
+     final indexToSet = cardIndex==0 ? 1 : 0; 
+     await setSelectedCard(userCards()[indexToSet]);
+    }
     cardList.removeAt(cardIndex);
     await setUserCards(cardList);
     if(shouldInitializeAuth){
+      await resetSelectedCard();
       await _initializeAuthStatus();
     }
   }
@@ -166,8 +179,26 @@ class SessionHandler extends ChangeNotifier {
     cardList.insert(0, value);
     await setUserCards(cardList);
     if(shouldInitializeAuth){
+      await setSelectedCard(value);
       await _initializeAuthStatus();
     }
+  }
+
+  CardInfoModel selectedCard (){
+    return userCards().firstWhere((element) => element.adressToDisplay==selectedCardAdress);
+  }
+
+  Future<void> setSelectedCard(CardInfoModel card) async {
+    await LocaleManager.instance.setStringValue(
+      key: CacheKey.selectedCardAdress.name,
+      value: card.adressToDisplay,
+    );
+    selectedCardAdress = card.adressToDisplay;
+  }
+
+  Future<void> resetSelectedCard()async{
+    await LocaleManager.instance.removeAt(CacheKey.selectedCardAdress.name);
+    selectedCardAdress=null;
   }
 
   ///Gets the current user token if it's saved.

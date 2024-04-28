@@ -17,7 +17,7 @@ class NfcResponseModel {
       {
         final a = json;
       return NfcResponseModel(
-        ndef: json['ndef'] == null ? null : Ndef.fromJson(json['ndef']),
+        ndef: json['ndef'] == null ? null : NdefRes.fromJson(json['ndef']),
         mifare: json['mifare'] == null ? null : Mifare.fromJson(json['mifare']),
       );}
 
@@ -40,7 +40,7 @@ class NfcResponseModel {
     // return mifareIdentifier;
   }
 
-  Ndef? ndef;
+  NdefRes? ndef;
   Mifare? mifare;
 
   Map<String, dynamic> toJson() => {
@@ -80,14 +80,14 @@ class Mifare {
       };
 }
 
-class Ndef {
-  Ndef({
+class NdefRes {
+  NdefRes({
     this.maxSize,
     this.cachedMessage,
     this.isWritable,
   });
 
-  factory Ndef.fromJson(Map<String, dynamic> json) => Ndef(
+  factory NdefRes.fromJson(Map<String, dynamic> json) => NdefRes(
         maxSize: json['maxSize'],
         cachedMessage: json['cachedMessage'] == null
             ? null

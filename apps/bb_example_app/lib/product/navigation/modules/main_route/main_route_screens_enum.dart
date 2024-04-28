@@ -15,13 +15,13 @@ enum MainRouteScreenEnums {
     '/payment',
     'paymentScreen',
   ),
+  passwordChangeScreen(
+    '/passwordChange',
+    'passwordChangeScreen',
+  ),
   nfcPaymentScreen(
     '/nfcPayment',
     'nfcPaymentScreen',
-  ),
-  cardPasscodeScreen(
-    '/cardPasscode',
-    'cardPasscodeScreen',
   ),
   discoverScreen(
     '/discover',
@@ -30,6 +30,14 @@ enum MainRouteScreenEnums {
   cardActionsScreen(
     '/cardActions',
     'cardActionsScreen',
+  ),
+  allCardsScreen(
+    '/allCards',
+    'allCardsScreen',
+  ),
+  webViewScreen(
+    '/webView',
+    'webViewScreen',
   ),
   ;
 

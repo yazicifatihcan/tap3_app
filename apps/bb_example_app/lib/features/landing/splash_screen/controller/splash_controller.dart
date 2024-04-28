@@ -17,7 +17,7 @@ class SplashController extends BaseControllerInterface {
 
   /// Function call to handle things in splash
   Future<void> ready() async {
-    await LocaleManager.instance.clearAll();
+    // await LocaleManager.instance.clearAll();
     await Get.deleteAll();
 
     await LocalAuthManager.initLocalAuthManager();

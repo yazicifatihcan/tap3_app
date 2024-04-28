@@ -59,6 +59,18 @@ class StringValidator {
     return null;
   }
 
+  ///To check if string is not empty
+  String? isValueSame(String? value,String compareValue) {
+    if (value == null || value.isEmpty) {
+      return AppLocalization.getLabels(context).requiredText;
+    } else if (value.length<4){
+      return 'Can be min 4 characters';
+    }else if(value!=compareValue){
+      return 'Values does not match.';
+    }
+    return null;
+  }
+
   ///To validate credit card number
   String? isCreditCardNumber(String? value) {
     if (value == null || value.isEmpty) {

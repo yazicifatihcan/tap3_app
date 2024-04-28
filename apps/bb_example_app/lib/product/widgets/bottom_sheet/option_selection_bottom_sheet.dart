@@ -32,23 +32,22 @@ class OptionSelectionBottomSheet extends BottomSheetWidget<void> {
             Flexible(
               child: ListView.separated(
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final item = options[index];
-                  return GestureDetector(
+                  return TextWithIcon(
+                    title: item.title,
+                    icon: item.icon.svg(color: item.color),
+                    color: item.color,
                     onTap: (){
                       Navigator.pop(context);
-                        if (item.subOptions.isEmpty) {
-                          item.onTap?.call();
-                        } else {
-                          OptionSelectionBottomSheet(options: item.subOptions)
-                              .showBottomSheet(context: context);
-                        }
+                      if (item.subOptions==null || item.subOptions!.isEmpty) {
+                        item.onTap?.call();
+                      } else {
+                        OptionSelectionBottomSheet(options: item.subOptions!)
+                            .showBottomSheet(context: context);
+                      }
                     },
-                    child: TextWithIcon(
-                      title: item.title,
-                      icon: item.icon.svg(color: item.color),
-                      color: item.color,
-                    ),
                   );
                 },
                 separatorBuilder: (context, index) => SizedBox(
@@ -105,12 +104,12 @@ class OptionItemModel {
     this.color,
     required this.icon,
     this.onTap,
-    this.subOptions = const [],
+    this.subOptions,
   });
 
   final String title;
   final SvgGeneralImage icon;
   final Color? color;
   final VoidCallback? onTap;
-  final List<OptionItemModel> subOptions;
+  final List<OptionItemModel>? subOptions;
 }

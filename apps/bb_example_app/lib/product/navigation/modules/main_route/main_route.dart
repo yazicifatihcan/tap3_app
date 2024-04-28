@@ -1,9 +1,8 @@
+import 'package:bb_example_app/features/all_cards_screen/all_cards_screen.dart';
 import 'package:bb_example_app/features/card_actions_screen/card_actions_screen.dart';
-import 'package:bb_example_app/features/card_password_screen/card_password_screen.dart';
-import 'package:bb_example_app/features/card_password_screen/controller/card_password_controller.dart';
 import 'package:bb_example_app/features/discover_screen/discover_screen.dart';
 import 'package:bb_example_app/features/home_screen/home_screen.dart';
-import 'package:bb_example_app/features/nfc_payment_screen/nfc_payment_screen.dart';
+import 'package:bb_example_app/features/password_change_screen/password_change_screen.dart';
 import 'package:bb_example_app/features/payment_screen/payment_screen.dart';
 import 'package:bb_example_app/features/scan_qr_screen/scan_qr_screen.dart';
 import 'package:bb_example_app/product/managers/wallet_parser.dart';
@@ -44,21 +43,18 @@ class MainRoute {
       },
     ),
     GoRoute(
-      name: MainRouteScreenEnums.nfcPaymentScreen.name,
-      path: MainRouteScreenEnums.nfcPaymentScreen.path,
+      name: MainRouteScreenEnums.allCardsScreen.name,
+      path: MainRouteScreenEnums.allCardsScreen.path,
       builder: (context, state) {
-        final args = state.extra! as double;
-        return NfcPaymentScreen(
-          totalAmount: args,
-        );
+        return const AllCardsScreen();
       },
     ),
     GoRoute(
-      name: MainRouteScreenEnums.cardPasscodeScreen.name,
-      path: MainRouteScreenEnums.cardPasscodeScreen.path,
+      name: MainRouteScreenEnums.passwordChangeScreen.name,
+      path: MainRouteScreenEnums.passwordChangeScreen.path,
       builder: (context, state) {
-        final args =  state.extra! as CardPasscodeArgumentModel;
-        return CardPasswordScreen(args: args,);
+        final args = state.extra! as CardInfoModel;
+        return PasswordChangeScreen(card: args,);
       },
     ),
     GoRoute(

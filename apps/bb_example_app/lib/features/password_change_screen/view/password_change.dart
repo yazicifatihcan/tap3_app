@@ -1,20 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:bb_example_app/features/card_password_screen/controller/card_password_controller.dart';
+import 'package:bb_example_app/features/password_change_screen/controller/password_change_controller.dart';
 import 'package:bb_example_app/product/base/base_view.dart';
 import 'package:bb_example_app/product/utility/enums/module_padding_enums.dart';
 import 'package:bb_example_app/product/widgets/button/module_button.dart';
 import 'package:bb_example_app/product/widgets/input/module_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:pretty_animated_buttons/pretty_animated_buttons.dart';
 import 'package:values/values.dart';
 
-class CardPassword extends StatelessWidget {
-  const CardPassword({
+class PasswordChange extends StatelessWidget {
+  const PasswordChange({
     required this.controller,
     super.key,
   });
 
-  final CardPasswordController controller;
+  final PasswordChangeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class CardPassword extends StatelessWidget {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: BaseView<CardPasswordController>(
+        body: BaseView<PasswordChangeController>(
           controller: controller,
           child: Padding(
             padding: EdgeInsets.all(ModulePadding.s.value),
@@ -45,19 +44,30 @@ class CardPassword extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Enter Password',
+                    'Enter New Password',
                     style: context.headlineSmall,
                   ),
                   Text(
-                    'Please enter the password of the card you scanned.',
+                    'Please enter the new password of the card.',
                     style: context.bodyMedium,
                   ),
                   const Spacer(),
                   ModuleTextField(
-                    obscureText: true,
                     autoFocus: true,
-                    controller: controller.cPassword,
-                    validator: controller.validator.isNotEmptyController,
+                    obscureText: true,
+                    controller: controller.cText,
+                    validator: (value)=>controller.validator.isValueSame(value, controller.cTextRepeat.text),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: context.primary,
+                    ),
+                  ),
+                  SizedBox(height:ModulePadding.m.value,),
+                  ModuleTextField(
+                    autoFocus: true,
+                    obscureText: true,
+                    controller: controller.cTextRepeat,
+                    validator: (value)=>controller.validator.isValueSame(value, controller.cText.text),
                     prefixIcon: Icon(
                       Icons.lock,
                       color: context.primary,

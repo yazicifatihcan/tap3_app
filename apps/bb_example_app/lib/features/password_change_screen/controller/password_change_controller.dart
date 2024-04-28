@@ -4,8 +4,8 @@ import 'package:bb_example_app/product/managers/wallet_parser.dart';
 import 'package:bb_example_app/product/navigation/routing_manager.dart';
 import 'package:flutter/material.dart';
 
-class PasswordController extends BaseControllerInterface {
-  PasswordController({
+class PasswordChangeController extends BaseControllerInterface {
+  PasswordChangeController({
     required this.card,
   });
 
@@ -13,6 +13,7 @@ class PasswordController extends BaseControllerInterface {
 
   final GlobalKey<FormState> fKey = GlobalKey<FormState>();
   final TextEditingController cText = TextEditingController();
+  final TextEditingController cTextRepeat = TextEditingController();
 
   @override
   Future<void> onReady() async {
@@ -27,19 +28,7 @@ class PasswordController extends BaseControllerInterface {
 
   Future<void> onTapConfirm() async {
     if (fKey.currentState!.validate()) {
-      final result = card.checkCardPassword(cText.text);
-      if (result) {
-        Navigator.pop(context, cText.text);
-      } else {
-        await AwesomeDialog(
-          context: RoutingManager.instance.context!,
-          dialogType: DialogType.error,
-          animType: AnimType.topSlide,
-          title: 'Wrong Password',
-          desc: 'Incorrect password. Please try again.',
-          btnOkOnPress: () {},
-        ).show();
-      }
+      Navigator.pop(context, cText.text);
     }
   }
 }

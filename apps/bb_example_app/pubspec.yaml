@@ -21,6 +21,7 @@ dependencies:
   encrypt: ^5.0.3
   tuple: ^2.0.2
   flutter_nfc_kit: ^3.4.2
+  webview_flutter: ^4.5.0
   web3dart: ^2.7.3
   pretty_animated_buttons: ^0.0.1
   flutter:

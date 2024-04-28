@@ -248,6 +248,7 @@ class _CardAnimationState extends State<CardAnimation>
           );
         },
         child: CreditCard(
+          showNeon: true,
           cardItem: widget.cardItem,
           isSelected: true,
           maticPrice: SessionHandler.instance.matic.quotes!.usd!.price!,

@@ -1,10 +1,6 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bb_example_app/product/base/controller/base_controller.dart';
 import 'package:bb_example_app/product/managers/card_handler.dart';
-import 'package:bb_example_app/product/navigation/modules/main_route/main_route_screens_enum.dart';
-import 'package:bb_example_app/product/navigation/routing_manager.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 class PaymentController extends BaseControllerInterface with CardHandler {
 
@@ -31,8 +27,7 @@ class PaymentController extends BaseControllerInterface with CardHandler {
     if(!isAmountValid) return;
     await paymentProcess(
       context: context,
-      //TODO
-      payerCard: sessionManager.userCards()[0],
+      payerCard: sessionManager.selectedCard(),
       totalAmount: totalAmount!,
       targetAdress: adress,
     );

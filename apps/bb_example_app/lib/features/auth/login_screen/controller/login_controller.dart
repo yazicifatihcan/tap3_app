@@ -8,6 +8,7 @@ import 'package:values/values.dart';
 
 ///Controller for Example Screen
 class LoginController extends BaseControllerInterface with CardHandler {
+  
   final GlobalKey<FormState> fKey = GlobalKey<FormState>();
   final TextEditingController cEmail = TextEditingController();
   final TextEditingController cPassword = TextEditingController();

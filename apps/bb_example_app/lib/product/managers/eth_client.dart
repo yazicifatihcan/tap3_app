@@ -13,5 +13,27 @@ class EthClient {
   final httpClient = Client();
   Web3Client get ethClient => Web3Client(provider, httpClient);
 
-  
+  Future<void> pay(
+      EthPrivateKey privateKey, String targetAdress, double amount) async {
+    try {
+      await ethClient.sendTransaction(
+        privateKey,
+        Transaction(
+          to: EthereumAddress.fromHex(targetAdress),
+          from: privateKey.address,
+          value: EtherAmount.fromInt(
+            EtherUnit.gwei,
+            convertDecimalToInteger(1),
+          ),
+        ),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  int convertDecimalToInteger(double decimal) {
+    const factor = 1000000000;
+    return (decimal * factor).round();
+  }
 }
